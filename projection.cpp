@@ -121,22 +121,24 @@ public:
     }
 
     void draw_graph() {
+        string draw = "\x1B[H\x1B[?25l";
         for (size_t i = 0; i < size_x+2; ++i) {
-            cout << '-';
+            draw += '-';
         }
-        cout << '\n';
+        draw += '\n';
         for (size_t j = size_y; j>0;) {
             --j;
-            cout << '|';
+            draw += '|';
             for (size_t i = 0; i<size_x; ++i) {
-                cout << graph[i][j];
+                draw += graph[i][j];
             }
-            cout << "|\n";
+            draw += "|\n";
         }
         for (size_t i = 0; i < size_x+2; ++i) {
-            cout << '-';
+            draw += '-';
         }
-        cout << '\n';
+        draw += '\n';
+        cout << draw << flush;
     }
     
     void convert_dim() {
@@ -145,7 +147,8 @@ public:
         for (Point3D &p3d: points3d) {
             Point2D p2d;
             p2d.x = 0.5*p3d.x + 1*p3d.y;
-            p2d.y = 0.5*p3d.x + 1*p3d.z;
+            // p2d.y = (0.5*p3d.x + 1*p3d.z) * 0.5;
+            p2d.y = (0.5*p3d.x + 1*p3d.z);
             points2d.push_back(p2d);
         }
     }
@@ -185,14 +188,15 @@ private:
 };
 
 int main () {
+    ios_base::sync_with_stdio(false);
     Graph g = Graph();
     g.process_input();
+    cout << "\x1B[2J";
 
     while (true){
         this_thread::sleep_for(chrono::milliseconds(50));
-        cout << "\x1B[2J\x1B[H";
 
-        g.rotate(5,5);
+        g.rotate(5,0);
         g.clear_graph();
         g.update_graph();
         g.draw_graph();
