@@ -92,12 +92,13 @@ public:
 
                 // char angle_char = '.';
                 // if (x_new-x == 0) angle_char = '|';
-                // else if (y_new-y == 0) angle_char = '_';
+                // else if (y_new-y == 0) angle_char = '-';
                 // else if (!((x_new-x)-(y_new-y))) angle_char = '/';
                 // else angle_char = '\\';
 
                 // x = x_new;
                 // y = y_new;
+
                 graph[static_cast<size_t>(x_new)][static_cast<size_t>(y_new)] = angle_char;
 
                 cur_x += cos(angle * (M_PI/180.0));
@@ -107,7 +108,7 @@ public:
         for (Point2D &p: points2d) {
             size_t x = static_cast<size_t>(p.x-MIN_X);
             size_t y = static_cast<size_t>(p.y-MIN_Y);
-
+            
             graph[x][y] = 'o';
         }
     }
@@ -121,7 +122,7 @@ public:
     }
 
     void draw_graph() {
-        string draw = "\x1B[H";
+        string draw = "\x1B[H\x1B[?25l";
         for (size_t i = 0; i < size_x+2; ++i) {
             draw += '-';
         }
@@ -147,8 +148,8 @@ public:
         for (Point3D &p3d: points3d) {
             Point2D p2d;
             p2d.x = 0.5*p3d.x + 1*p3d.y;
-            p2d.y = (0.5*p3d.x + 1*p3d.z) * 0.7;
-            // p2d.y = (0.5*p3d.x + 1*p3d.z);
+            // p2d.y = (0.5*p3d.x + 1*p3d.z) * 0.5;
+            p2d.y = (0.5*p3d.x + 1*p3d.z);
             points2d.push_back(p2d);
         }
     }
