@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <thread>
+#include <chrono>
 using namespace std;
 
 struct Point2D {
@@ -70,7 +72,7 @@ public:
 
     void update_graph() {
         convert_dim();
-        
+
         for (const auto &edge: edges) {
             Point2D &p1 = points2d[edge.first];
             Point2D &p2 = points2d[edge.second];
@@ -78,13 +80,26 @@ public:
             double angle = atan2(p2.y-p1.y, p2.x - p1.x) * (180.0/M_PI);
             double dist = sqrt(pow(p2.x-p1.x,2) + pow(p2.y-p1.y,2));
             char angle_char = get_char(angle);
+            
             double cur_x = p1.x;
             double cur_y = p1.y;
+            // int x = static_cast<int>(cur_x-MIN_X);
+            // int y = static_cast<int>(cur_y-MIN_Y);
 
             for (size_t i = 0; i<= static_cast<size_t>(dist); ++i) {
-                size_t x = static_cast<size_t>(cur_x-MIN_X);
-                size_t y = static_cast<size_t>(cur_y-MIN_Y);
-                graph[x][y] = angle_char;
+                int x_new = static_cast<int>(cur_x-MIN_X);
+                int y_new = static_cast<int>(cur_y-MIN_Y);
+
+                // char angle_char = '.';
+                // if (x_new-x == 0) angle_char = '|';
+                // else if (y_new-y == 0) angle_char = '-';
+                // else if (!((x_new-x)-(y_new-y))) angle_char = '/';
+                // else angle_char = '\\';
+
+                // x = x_new;
+                // y = y_new;
+                graph[static_cast<size_t>(x_new)][static_cast<size_t>(y_new)] = angle_char;
+
                 cur_x += cos(angle * (M_PI/180.0));
                 cur_y += sin(angle * (M_PI/180.0));
             }
@@ -94,6 +109,14 @@ public:
             size_t y = static_cast<size_t>(p.y-MIN_Y);
 
             graph[x][y] = 'o';
+        }
+    }
+
+    void clear_graph() {
+        for (size_t i = 0; i<size_x; ++i) {
+            for (size_t j = 0; j<size_y; ++j) {
+                graph[i][j] = ' ';
+            }
         }
     }
 
@@ -128,25 +151,24 @@ public:
     }
 
     void rotate(double del_theta, double del_phi) {
-        del_theta *= (M_PI/180);
-        del_phi *= (M_PI/180);
+        double theta = del_theta * M_PI / 180.0;
+        double phi   = del_phi   * M_PI / 180.0;
 
-        for (Point3D &p: points3d) {
-            double rho = sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
-            double theta = atan2(p.y, p.x)+ del_theta;
-            double phi = acos(p.z/rho)+ del_phi;
+        for (Point3D &p : points3d) {
+            double x1 = p.x * cos(theta) - p.y * sin(theta);
+            double y1 = p.x * sin(theta) + p.y * cos(theta);
+            double z1 = p.z;
 
-            if (isnan(phi)) phi = 0;
+            double y2 = y1 * cos(phi) - z1 * sin(phi);
+            double z2 = y1 * sin(phi) + z1 * cos(phi);
 
-            p.x = rho * sin(phi) * cos(theta);
-            p.y = rho * sin(phi) * sin(theta);
-            p.z = rho * cos(phi);
-
-            cout << rho << " " << theta  << " " << phi << "\n";
-            cout << p.x << " " <<p.y  << " " << p.z << "\n";
+            p.x = x1;
+            p.y = y2;
+            p.z = z2;
         }
         convert_dim();
     }
+
 private: 
     int MIN_X;
     int MAX_X;
@@ -165,7 +187,14 @@ private:
 int main () {
     Graph g = Graph();
     g.process_input();
-    g.rotate(30,30);
-    g.update_graph();
-    g.draw_graph();
+
+    while (true){
+        this_thread::sleep_for(chrono::milliseconds(50));
+        cout << "\x1B[2J\x1B[H";
+
+        g.rotate(5,0);
+        g.clear_graph();
+        g.update_graph();
+        g.draw_graph();
+    }
 }
