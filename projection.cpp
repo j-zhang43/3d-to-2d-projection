@@ -92,7 +92,7 @@ public:
 
                 // char angle_char = '.';
                 // if (x_new-x == 0) angle_char = '|';
-                // else if (y_new-y == 0) angle_char = '-';
+                // else if (y_new-y == 0) angle_char = '_';
                 // else if (!((x_new-x)-(y_new-y))) angle_char = '/';
                 // else angle_char = '\\';
 
@@ -121,7 +121,7 @@ public:
     }
 
     void draw_graph() {
-        string draw = "\x1B[H\x1B[?25l";
+        string draw = "\x1B[H";
         for (size_t i = 0; i < size_x+2; ++i) {
             draw += '-';
         }
@@ -147,8 +147,8 @@ public:
         for (Point3D &p3d: points3d) {
             Point2D p2d;
             p2d.x = 0.5*p3d.x + 1*p3d.y;
-            // p2d.y = (0.5*p3d.x + 1*p3d.z) * 0.5;
-            p2d.y = (0.5*p3d.x + 1*p3d.z);
+            p2d.y = (0.5*p3d.x + 1*p3d.z) * 0.7;
+            // p2d.y = (0.5*p3d.x + 1*p3d.z);
             points2d.push_back(p2d);
         }
     }
