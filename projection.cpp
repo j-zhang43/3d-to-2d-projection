@@ -3,10 +3,6 @@
 #include <cmath>
 using namespace std;
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 struct Point2D {
     double x;
     double y;
@@ -131,6 +127,26 @@ public:
         }
     }
 
+    void rotate(double del_theta, double del_phi) {
+        del_theta *= (M_PI/180);
+        del_phi *= (M_PI/180);
+
+        for (Point3D &p: points3d) {
+            double rho = sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
+            double theta = atan2(p.y, p.x)+ del_theta;
+            double phi = acos(p.z/rho)+ del_phi;
+
+            if (isnan(phi)) phi = 0;
+
+            p.x = rho * sin(phi) * cos(theta);
+            p.y = rho * sin(phi) * sin(theta);
+            p.z = rho * cos(phi);
+
+            cout << rho << " " << theta  << " " << phi << "\n";
+            cout << p.x << " " <<p.y  << " " << p.z << "\n";
+        }
+        convert_dim();
+    }
 private: 
     int MIN_X;
     int MAX_X;
@@ -149,6 +165,7 @@ private:
 int main () {
     Graph g = Graph();
     g.process_input();
+    g.rotate(30,30);
     g.update_graph();
     g.draw_graph();
 }
