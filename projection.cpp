@@ -192,7 +192,7 @@ int main () {
         this_thread::sleep_for(chrono::milliseconds(50));
         cout << "\x1B[2J\x1B[H";
 
-        g.rotate(5,0);
+        g.rotate(5,5);
         g.clear_graph();
         g.update_graph();
         g.draw_graph();
