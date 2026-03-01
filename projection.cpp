@@ -148,8 +148,13 @@ public:
         for (Point3D &p3d: points3d) {
             Point2D p2d;
             p2d.x = 0.5*p3d.x + 1*p3d.y;
-            p2d.y = (0.5*p3d.x + 1*p3d.z) * 0.7;
+            p2d.y = (0.5*p3d.x + 1*p3d.z) * 0.55;
+
+            // p2d.x *= 0.5;
+            // p2d.y *= 0.5;
+            
             // p2d.y = (0.5*p3d.x + 1*p3d.z);
+
             points2d.push_back(p2d);
         }
     }
@@ -195,7 +200,8 @@ int main () {
     cout << "\x1B[2J";
 
     while (true){
-        g.rotate(0.05,0);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        g.rotate(0.03,0.01);
         g.clear_graph();
         g.update_graph();
         g.draw_graph();
