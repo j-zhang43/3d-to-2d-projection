@@ -23,6 +23,12 @@ public:
                junk >> MAX_X >>
                junk >> MIN_Y >>
                junk >> MAX_Y;
+
+        MIN_X = (int)(MIN_X*SCALE);
+        MAX_X = (int)(MAX_X*SCALE);
+        MIN_Y = (int)(MIN_Y*SCALE);
+        MAX_Y = (int)(MAX_Y*SCALE);
+
         size_t size;
         cin >> size;
         points3d.resize(size);
@@ -30,6 +36,9 @@ public:
         for (size_t i = 0; i<size; ++i) {
             Point3D p;
             cin >> p.x >> p.y >> p.z;
+            p.x *= SCALE;
+            p.y *= SCALE;
+            p.z *= SCALE;
             points3d[i] = p;
         }
         cin >> size;
@@ -183,9 +192,11 @@ private:
     int MAX_X;
     int MIN_Y;
     int MAX_Y;
-
+    
     size_t size_x;
     size_t size_y;
+
+    const double SCALE = 10;
 
     vector<vector<char>> graph;
     vector<Point3D> points3d;
@@ -201,7 +212,7 @@ int main () {
 
     while (true){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        g.rotate(0.03,0.01);
+        g.rotate(0.03,-0.01);
         g.clear_graph();
         g.update_graph();
         g.draw_graph();
