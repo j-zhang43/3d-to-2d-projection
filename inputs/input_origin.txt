@@ -2,6 +2,7 @@ MIN_X -35
 MAX_X 35
 MIN_Y -35
 MAX_Y 35
+SCALE 1
 
 8
 0 0 0

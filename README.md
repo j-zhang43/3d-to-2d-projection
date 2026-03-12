@@ -4,12 +4,13 @@
 
 To run, go in terminal and run ``` make release```, then run ```./projection < <input_file>```
 
-If you want to make your own input file, format like so:
+If you want to make your own input file use [blend_to_input.py](blend_to_input.py) or format like so, works best with objects under 500 vertices:
 ```
-MIN_X <int> 
-MAX_X <int>
-MIN_Y <int>
-MAX_Y <int>
+MIN_X <double> 
+MAX_X <double>
+MIN_Y <double>
+MAX_Y <double>
+SCALE <double>
 
 <n_vertices>
 <p0x> <p0y> <p0z>
@@ -18,10 +19,10 @@ MAX_Y <int>
 <pnx> <pny> <pnz>
 
 <n_edges>
-<idx_p1> <idx_p2> 
-<idx_p1> <idx_p2>
+<idx_p1> <idx_p2> \\ 1st edge
+<idx_p1> <idx_p2> \\ 2st edge
 ...
-<idx_p1> <idx_p2>
+<idx_p1> <idx_p2> 
 ```
 
 ## Errors and Configurations: 

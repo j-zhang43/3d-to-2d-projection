@@ -23,6 +23,8 @@ public:
                junk >> MAX_X >>
                junk >> MIN_Y >>
                junk >> MAX_Y;
+               
+        cin >> junk >> SCALE;
 
         MIN_X = (int)(MIN_X*SCALE);
         MAX_X = (int)(MAX_X*SCALE);
@@ -188,15 +190,14 @@ public:
     }
 
 private: 
-    int MIN_X;
-    int MAX_X;
-    int MIN_Y;
-    int MAX_Y;
-    
     size_t size_x;
     size_t size_y;
 
-    const double SCALE = 10;
+    double MIN_X;
+    double MAX_X;
+    double MIN_Y;
+    double MAX_Y;
+    double SCALE;
 
     vector<vector<char>> graph;
     vector<Point3D> points3d;
@@ -206,6 +207,7 @@ private:
 
 int main () {
     ios_base::sync_with_stdio(false);
+
     Graph g = Graph();
     g.process_input();
     cout << "\x1B[2J";
