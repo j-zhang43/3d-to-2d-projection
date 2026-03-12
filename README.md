@@ -19,10 +19,10 @@ SCALE <double>
 <pnx> <pny> <pnz>
 
 <n_edges>
-<idx_p1> <idx_p2> \\ 1st edge
-<idx_p1> <idx_p2> \\ 2st edge
+<idx_p1> <idx_p2> // 1st edge
+<idx_p1> <idx_p2> // 2st edge
 ...
-<idx_p1> <idx_p2> 
+<idx_p1> <idx_p2> // nth edge
 ```
 
 ## Errors and Configurations: 
